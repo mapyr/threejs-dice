@@ -1,37 +1,66 @@
 {
   "name": "threejs-dice",
-  "version": "1.1.1",
-  "description": "Create 3d dice which can be rolled.",
-  "main": "lib/dice.js",
-  "typings": "index.d.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "2.0.0-alpha.0",
+  "description": "Typed 3D polyhedral dice with Three.js and Rapier physics.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/byWulf/threejs-dice.git"
-  },
-  "keywords": [
-    "threejs",
-    "cannon",
-    "dice",
-    "rpg",
-    "tabletop",
-    "boardgame"
+  "files": [
+    "dist",
+    "README.md",
+    "MIGRATION.md",
+    "docs/API.md",
+    "LICENSE"
   ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "prepack": "npm run build",
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -p tsconfig.build.json && vite build --config vite.lib.config.ts",
+    "build:playground": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:browser": "playwright test",
+    "verify": "npm run format:check && npm run check && npm test && npm run build && npm run build:playground",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "license": "MIT",
   "author": "byWulf <wulf1337@gmail.com>",
   "contributors": [
     "Anton Natarov (http://www.teall.info)"
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/byWulf/threejs-dice/issues"
+  "keywords": [
+    "threejs",
+    "rapier",
+    "dice",
+    "rpg",
+    "tabletop"
+  ],
+  "peerDependencies": {
+    "three": ">=0.187.0 <0.188.0"
   },
-  "homepage": "https://github.com/byWulf/threejs-dice#readme",
   "dependencies": {
-    "@types/cannon": "^0.1.2",
-    "@types/three": "^0.131.0",
-    "cannon": "^0.6.2",
-    "three": "^0.137.0"
+    "@dimforge/rapier3d-compat": "0.21.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^24.19.2",
+    "@types/three": "^0.187.0",
+    "prettier": "3.9.10",
+    "three": "^0.187.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   }
 }

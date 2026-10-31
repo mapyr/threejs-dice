@@ -1,0 +1,23 @@
+name: Verify
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@v5
+      - run: mise run setup
+      - run: mise run verify
+      - run: mise exec -- npm exec -- playwright install --with-deps chromium --only-shell
+      - run: mise run test:browser
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: browser-results
+          path: test-results/
+          if-no-files-found: ignore

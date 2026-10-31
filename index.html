@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#101416" />
+    <meta
+      name="description"
+      content="A local 3D dice playground. Roll D4–D20, test physics and directed outcomes, and inspect your roll history."
+    />
+    <title>Dice Lab — threejs-dice</title>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <a class="brand" href="./"
+          ><span class="brand-icon">⬡</span> DICE LAB
+          <span class="version">v2 / alpha</span></a
+        ><span class="engine"><i></i> THREE.JS + RAPIER</span>
+      </header>
+      <main>
+        <section class="intro">
+          <div class="eyebrow">A LITTLE CHAOS. PRECISELY SIMULATED.</div>
+          <h1>Let gravity<br />make the call<span>.</span></h1>
+          <p>
+            Six polyhedra. Real physics. A playground for your next critical
+            hit.
+          </p>
+        </section>
+        <section class="workbench" aria-label="Dice playground">
+          <div class="viewport">
+            <div class="tray-label">
+              SIMULATION / 01 <span id="phase">READY</span>
+            </div>
+            <div id="scene" aria-label="Interactive 3D dice tray"></div>
+            <div class="tray-footer">
+              <span>DRAG TO ORBIT · SCROLL TO ZOOM</span
+              ><span id="metrics">INITIALIZING WASM…</span>
+            </div>
+          </div>
+          <aside>
+            <div class="panel-title">
+              <span>THE SETUP</span><span>01—06</span>
+            </div>
+            <fieldset id="settings">
+              <label for="shape">Polyhedron</label
+              ><select id="shape">
+                <option value="mixed">The full party · D4–D20</option>
+                <option value="4">D4 · Tetrahedron</option>
+                <option value="6">D6 · Cube</option>
+                <option value="8">D8 · Octahedron</option>
+                <option value="10">D10 · Pentagonal trapezohedron</option>
+                <option value="12">D12 · Dodecahedron</option>
+                <option value="20">D20 · Icosahedron</option>
+              </select>
+              <div class="fields">
+                <div>
+                  <label for="count">Dice</label
+                  ><input id="count" type="number" min="1" max="12" value="6" />
+                </div>
+                <div>
+                  <label for="color">Base color</label
+                  ><input id="color" type="color" value="#a9e66b" />
+                </div>
+              </div>
+              <div class="fields">
+                <div>
+                  <label for="size">Die size</label
+                  ><input
+                    id="size"
+                    type="number"
+                    min="0.5"
+                    max="1.5"
+                    step="0.05"
+                    value="1.15"
+                  />
+                </div>
+                <div>
+                  <label for="ink">Label color</label
+                  ><input id="ink" type="color" value="#1c3024" />
+                </div>
+              </div>
+              <label for="strength"
+                >Throw strength <output id="strength-value">1.0×</output></label
+              ><input
+                id="strength"
+                type="range"
+                min="0.2"
+                max="2"
+                step="0.1"
+                value="1"
+              />
+              <label for="friction"
+                >Surface friction
+                <output id="friction-value">0.65</output></label
+              ><input
+                id="friction"
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value="0.65"
+              />
+              <label for="restitution"
+                >Surface bounce
+                <output id="restitution-value">0.30</output></label
+              ><input
+                id="restitution"
+                type="range"
+                min="0"
+                max="0.8"
+                step="0.05"
+                value="0.3"
+              />
+              <div class="target">
+                <label for="target"
+                  >Target value <span>for directed rolls</span></label
+                ><input id="target" type="number" min="1" max="20" value="1" />
+                <p>
+                  Each die is capped at its highest value. Directed rolls remap
+                  labels before replay.
+                </p>
+              </div>
+            </fieldset>
+            <div class="actions">
+              <button id="roll" class="primary" disabled>
+                Roll the dice <span>↗</span></button
+              ><button id="directed" disabled>Roll to target</button
+              ><button id="cancel" hidden>Cancel roll</button>
+              <div class="secondary-actions">
+                <button id="reset" disabled>Reset dice</button
+                ><button id="camera">Reset view</button>
+              </div>
+            </div>
+            <div class="tools">
+              <label><input id="debug" type="checkbox" /> Collider view</label
+              ><button id="copy">Copy config ↗</button>
+            </div>
+          </aside>
+        </section>
+        <section class="results">
+          <div>
+            <div class="eyebrow">THE VERDICT</div>
+            <p id="status" role="status" aria-live="polite">
+              Loading the physics engine…
+            </p>
+          </div>
+          <div id="values" aria-label="Dice results"></div>
+        </section>
+        <section class="manual-help" aria-label="Playground instructions">
+          <p>
+            <kbd>Space</kbd> roll · <kbd>Esc</kbd> cancel · Drag to orbit ·
+            Pinch or scroll to zoom.
+          </p>
+          <p>
+            Changing the setup creates a fresh set. Directed rolls change face
+            labels; a free roll restores them.
+          </p>
+        </section>
+        <section class="history-section" aria-labelledby="history-title">
+          <div class="history-heading">
+            <h2 id="history-title">
+              Recent rolls <span id="history-count">0 / 20</span>
+            </h2>
+            <button id="clear-history" disabled>Clear history</button>
+          </div>
+          <p id="history-empty">
+            Your next questionable decision starts with a roll. Results stay
+            here until you reload.
+          </p>
+          <ol id="history" aria-label="Recent roll history"></ol>
+        </section>
+        <details>
+          <summary>Integration snippet <span>ESM / TypeScript</span></summary>
+          <pre id="snippet"></pre>
+        </details>
+      </main>
+      <footer>
+        <span>threejs-dice / an old library, a new roll.</span
+        ><span>MIT LICENSE · NO FRAMEWORK REQUIRED</span>
+      </footer>
+    </div>
+    <script type="module" src="/playground/main.ts"></script>
+  </body>
+</html>

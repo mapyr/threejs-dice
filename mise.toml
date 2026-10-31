@@ -1,0 +1,27 @@
+[tools]
+node = "24.22.0"
+
+[env]
+PLAYWRIGHT_BROWSERS_PATH = "{{config_root}}/.local/browsers"
+
+[tasks."setup:browser"]
+run = "npm exec -- playwright install chromium --only-shell"
+
+[tasks.setup]
+run = "npm ci"
+[tasks.dev]
+run = "npm run dev"
+[tasks.preview]
+run = "npm run preview"
+[tasks.check]
+run = "npm run check"
+[tasks.test]
+run = "npm test"
+[tasks."test:browser"]
+run = "npm run test:browser"
+[tasks.build]
+run = "npm run build"
+[tasks."build:playground"]
+run = "npm run build:playground"
+[tasks.verify]
+run = "npm run verify"
