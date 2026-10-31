@@ -37,7 +37,11 @@
   },
   "license": "MIT",
   "author": "byWulf <wulf1337@gmail.com>",
+  "maintainers": [
+    "Marcin Pyrka <pyrka.marcin@gmail.com>"
+  ],
   "contributors": [
+    "Marcin Pyrka <pyrka.marcin@gmail.com>",
     "Anton Natarov (http://www.teall.info)"
   ],
   "keywords": [

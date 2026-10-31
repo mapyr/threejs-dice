@@ -173,6 +173,9 @@ output; `mise run dev` serves the editable source. Neither command publishes a s
 
 ## Credits and license
 
+This v2 fork is maintained by Marcin Pyrka. See [LICENSE](./LICENSE) for the
+original copyright notice and the additional notice for this fork.
+
 MIT. Original library by byWulf, based on Anton Natarov's
 [Online 3D dice roller](http://www.teall.info/2014/01/online-3d-dice-roller.htm).
 Original polyhedra, numbering and bevel topology are retained. The frozen legacy
